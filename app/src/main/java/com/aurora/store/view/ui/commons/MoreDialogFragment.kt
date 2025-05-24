@@ -429,7 +429,7 @@ class MoreDialogFragment : DialogFragment() {
                 destinationID = R.id.appsGamesFragment
             ),
             ComposeOption(
-                title = R.string.title_blacklist_manager,
+                title = R.string.title_apps_blocked_updates,
                 icon = R.drawable.ic_blacklist,
                 screen = Screen.Blacklist
             ),

@@ -21,7 +21,7 @@
     <item
         android:id="@+id/menu_blacklist_manager"
         android:icon="@drawable/ic_blacklist"
-        android:title="@string/title_blacklist_manager" />
+        android:title="@string/title_apps_blocked_updates" />
 
     <item
         android:id="@+id/menu_spoof_manager"

@@ -22,7 +22,7 @@ Aurora Store works exactly like a door or a browser, allowing you to log in to y
 - Device & Locale spoofing: Change your device and/or locale to access geo locked apps
 - [Exodus Privacy](https://exodus-privacy.eu.org/) integration: Instantly see trackers in app
 - [Plexus](https://plexus.techlore.tech/) integration: Instantly see app compatibility without Google Play Services or with microG
-- Updates blacklisting: Ignore updates for specific apps
+- Update blocking: Ignore updates for specific apps
 - Download manager
 - Manual downloads: allows you to download older version of apps, provided
   - The APKs are available with Google

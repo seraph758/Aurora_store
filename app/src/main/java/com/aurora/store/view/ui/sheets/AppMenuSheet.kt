@@ -66,12 +66,12 @@ class AppMenuSheet : BaseDialogSheet<SheetAppMenuBinding>() {
 
         with(binding.navigationView) {
             //Switch strings for Add/Remove Blacklist
-            val blackListMenu: MenuItem = menu.findItem(R.id.action_blacklist)
+            val blackListMenu: MenuItem = menu.findItem(R.id.action_block_updates)
             blackListMenu.setTitle(
                 if (isBlacklisted)
-                    R.string.action_whitelist
+                    R.string.action_allow_updates
                 else
-                    R.string.action_blacklist_add
+                    R.string.action_block_updates
             )
 
             //Show/Hide actions based on installed status
@@ -81,14 +81,14 @@ class AppMenuSheet : BaseDialogSheet<SheetAppMenuBinding>() {
 
             setNavigationItemSelectedListener { item ->
                 when (item.itemId) {
-                    R.id.action_blacklist -> {
+                    R.id.action_block_updates -> {
 
                         if (isBlacklisted) {
                             viewModel.blacklistProvider.whitelist(args.app.packageName)
-                            requireContext().toast(R.string.toast_apk_whitelisted)
+                            requireContext().toast(R.string.toast_apk_updates_allowed)
                         } else {
                             viewModel.blacklistProvider.blacklist(args.app.packageName)
-                            requireContext().toast(R.string.toast_apk_blacklisted)
+                            requireContext().toast(R.string.toast_apk_updates_blocked)
                         }
 
                         dismissAllowingStateLoss()
