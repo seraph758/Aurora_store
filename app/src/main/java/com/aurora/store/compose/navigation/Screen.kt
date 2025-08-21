@@ -26,5 +26,5 @@ sealed class Screen(@StringRes val label: Int, @DrawableRes val icon: Int? = nul
     }
 
     @Serializable
-    data object Blacklist : Screen(label = R.string.title_blacklist_manager)
+    data object Blacklist : Screen(label = R.string.title_apps_blocked_updates)
 }

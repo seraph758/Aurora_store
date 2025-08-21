@@ -19,8 +19,8 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_blacklist"
-        android:title="@string/action_blacklist" />
+        android:id="@+id/action_block_updates"
+        android:title="@string/action_block_updates" />
     <item
         android:id="@+id/action_ignore"
         android:title="@string/action_ignore"

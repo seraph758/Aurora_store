@@ -47,11 +47,11 @@ fun BlacklistScreen(onNavigateUp: () -> Unit, viewModel: BlacklistViewModel = hi
         isPackageFiltered = { pkgInfo -> viewModel.isFiltered(pkgInfo) },
         onBlacklistImport = { uri ->
             viewModel.importBlacklist(context, uri)
-            context.toast(R.string.toast_black_import_success)
+            context.toast(R.string.toast_blocked_import_success)
         },
         onBlacklistExport = { uri ->
             viewModel.exportBlacklist(context, uri)
-            context.toast(R.string.toast_black_export_success)
+            context.toast(R.string.toast_blocked_export_success)
         },
         onBlacklist = { packageName -> viewModel.blacklist(packageName) },
         onBlacklistAll = { viewModel.blacklistAll() },
@@ -83,7 +83,7 @@ private fun ScreenContent(
             if (it != null) {
                 onBlacklistImport(it)
             } else {
-                context.toast(R.string.toast_black_import_failed)
+                context.toast(R.string.toast_blocked_import_failed)
             }
         }
     )
@@ -93,7 +93,7 @@ private fun ScreenContent(
             if (it != null) {
                 onBlacklistExport(it)
             } else {
-                context.toast(R.string.toast_black_export_failed)
+                context.toast(R.string.toast_blocked_export_failed)
             }
         }
     )
