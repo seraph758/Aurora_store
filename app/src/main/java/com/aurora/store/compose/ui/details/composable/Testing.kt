@@ -34,7 +34,7 @@ import com.aurora.store.compose.preview.ThemePreviewProvider
  * Column with proper vertical arrangement spacing in the AppDetailsScreen.
  *
  * @param isSubscribed Whether the user is subscribed to the beta testing program
- * @param onTestingSubscriptionChange Callback when the the subscription button is clicked
+ * @param onTestingSubscriptionChange Callback when the subscription button is clicked
  */
 @Composable
 fun Testing(isSubscribed: Boolean, onTestingSubscriptionChange: (subscribe: Boolean) -> Unit = {}) {
