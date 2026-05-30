@@ -20,6 +20,7 @@ import com.aurora.store.data.helper.DownloadHelper
 import com.aurora.store.data.helper.UpdateHelper
 import com.aurora.store.data.installer.AppInstaller
 import com.aurora.store.data.model.BuildType
+import com.aurora.store.data.model.DownloadStatus
 import com.aurora.store.data.model.SelfUpdate
 import com.aurora.store.data.model.UpdateMode
 import com.aurora.store.data.network.HttpClient
@@ -60,7 +61,7 @@ class UpdateWorker @AssistedInject constructor(
     private val blacklistProvider: BlacklistProvider,
     private val updateDao: UpdateDao,
     private val downloadHelper: DownloadHelper,
-    private val authProvider: AuthProvider,
+    authProvider: AuthProvider,
     private val appDetailsHelper: AppDetailsHelper,
     @Assisted private val context: Context,
     @Assisted workerParams: WorkerParameters
@@ -89,8 +90,6 @@ class UpdateWorker @AssistedInject constructor(
         get() = Preferences.getBoolean(context, Preferences.PREFERENCE_UPDATES_EXTENDED)
 
     override suspend fun doWork(): Result {
-        super.doWork()
-
         Log.i(TAG, "Checking for app updates")
         val updateMode = UpdateMode.entries[
             inputData.getInt(
@@ -103,14 +102,20 @@ class UpdateWorker @AssistedInject constructor(
             )
         ]
 
-        if (updateMode == UpdateMode.DISABLED || !AccountProvider.isLoggedIn(context)) {
+        if (updateMode == UpdateMode.DISABLED) {
             Log.i(TAG, "Updates are disabled, bailing out!")
-            return Result.failure()
+            return Result.success()
         }
 
-        if (!authProvider.isSavedAuthDataValid()) {
-            Log.i(TAG, "AuthData is not valid, retrying later!")
-            return Result.retry()
+        if (!AccountProvider.isLoggedIn(context)) {
+            Log.i(TAG, "User is not logged in, bailing out!")
+            return Result.success()
+        }
+
+        val authResult = super.doWork()
+        if (authResult != Result.success()) {
+            Log.i(TAG, "Failed to generate new session, deferring update check")
+            return authResult
         }
 
         try {
@@ -123,7 +128,7 @@ class UpdateWorker @AssistedInject constructor(
             val updates = allUpdates.filterNot { it.isIncompatible }
 
             if (updates.isEmpty() || updateMode == UpdateMode.CHECK_ONLY) {
-                Log.i(TAG, "Found ${updates.size} updates")
+                Log.i(TAG, "Found  ${updates.size} updates")
                 return Result.success()
             }
 
@@ -154,8 +159,26 @@ class UpdateWorker @AssistedInject constructor(
                 notifyUpdates(filteredUpdates.second)
             }
 
-            // Trigger download for apps if they can be auto-updated
-            filteredUpdates.first.forEach { downloadHelper.enqueueUpdate(it) }
+            /** Trigger download for apps if they can be auto-updated.
+             Skip apps whose previous attempt at the same versionCode already failed,
+             otherwise every periodic cycle wipes the FAILED state & retriggers DownloadWorker,
+             and re-emits a failure notification per app.
+             **/
+            filteredUpdates.first.forEach { update ->
+                val existing = downloadHelper.getDownload(update.packageName)
+                if (existing != null &&
+                    existing.versionCode == update.versionCode &&
+                    existing.status == DownloadStatus.FAILED
+                ) {
+                    Log.i(
+                        TAG,
+                        "Skipping auto-enqueue for ${update.packageName}: " +
+                            "previous attempt at v${update.versionCode} failed"
+                    )
+                    return@forEach
+                }
+                downloadHelper.enqueueUpdate(update)
+            }
 
             return Result.success()
         } catch (exception: Exception) {
