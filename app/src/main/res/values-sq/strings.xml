@@ -607,4 +607,6 @@
         <item quantity="one">S’u rifreskua dot %1$d llogari</item>
         <item quantity="other">S’u rifreskuan dot %1$d llogari</item>
     </plurals>
+    <string name="details_ratings_title_hint">Titull shqyrtimi</string>
+    <string name="status_installed">I instaluar</string>
 </resources>
