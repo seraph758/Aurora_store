@@ -269,7 +269,7 @@
     <string name="update_available">有更新可用</string>
     <string name="pref_vending_version_title">Google Play 版本</string>
     <string name="pref_updates_incompatible">顯示不相容的更新</string>
-    <string name="pref_updates_incompatible_desc">為不相容或已停用的應用程式顯示可能安裝失敗的更新</string>
+    <string name="pref_updates_incompatible_desc">顯示不相容或已停用應用程式的更新，這些應用程式可能無法安裝。</string>
     <string name="pref_aurora_only_desc">不檢查於 Aurora Store 外所安裝的應用程式更新</string>
     <string name="title_app_settings">應用程式設定</string>
     <string name="title_search_suggestion">搜尋建議</string>
@@ -293,7 +293,7 @@
     <string name="pref_updates_auto_install">檢查並自動安裝可用的更新</string>
     <string name="failed_to_fetch_report">取得隱私報告失敗</string>
     <string name="pref_updates_check_frequency">自動更新頻率</string>
-    <string name="pref_updates_check_frequency_desc">Aurora Store 多久檢查一次應用程式更新</string>
+    <string name="pref_updates_check_frequency_desc">Aurora 多久檢查一次應用程式更新。</string>
     <string name="app_links_title">應用程式連結</string>
     <string name="app_links_desc">允許 Aurora Store 開啟支援的連結</string>
     <string name="bad_request">內部錯誤！請一段時間後重試</string>
