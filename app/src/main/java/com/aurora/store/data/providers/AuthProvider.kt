@@ -107,7 +107,7 @@ class AuthProvider @Inject constructor(
     /**
      * Checks whether saved AuthData is valid or not
      */
-    fun isSavedAuthDataValid(): Boolean = AuthHelper.isValid(authData!!)
+    fun isSavedAuthDataValid(): Boolean = AuthHelper.using(httpClient).isValid(authData!!)
 
     /**
      * Builds [AuthData] for login using personal Google account

@@ -11,6 +11,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.aurora.extensions.TAG
 import com.aurora.store.AuroraApp
@@ -127,7 +128,7 @@ class UpdateHelper @Inject constructor(
 
     val isCheckingUpdates = WorkManager.getInstance(context)
         .getWorkInfosForUniqueWorkFlow(EXPEDITED_UPDATE_WORKER)
-        .map { list -> !list.all { it.state.isFinished } }
+        .map { list -> list.any { it.state == WorkInfo.State.RUNNING } }
         .stateIn(AuroraApp.scope, SharingStarted.WhileSubscribed(), false)
 
     /**
@@ -169,8 +170,11 @@ class UpdateHelper @Inject constructor(
             .setInputData(inputData)
             .build()
 
+        // REPLACE (not KEEP) so a manual check cancels any worker parked in a retry
+        // backoff and starts fresh; otherwise the stuck worker would linger for hours and
+        // the tap would be a no-op.
         WorkManager.getInstance(context)
-            .enqueueUniqueWork(EXPEDITED_UPDATE_WORKER, ExistingWorkPolicy.KEEP, work)
+            .enqueueUniqueWork(EXPEDITED_UPDATE_WORKER, ExistingWorkPolicy.REPLACE, work)
     }
 
     /**

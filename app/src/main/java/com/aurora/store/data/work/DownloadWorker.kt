@@ -380,7 +380,7 @@ class DownloadWorker @AssistedInject constructor(
     private suspend fun resolvePurchaseHelper(packageName: String): PurchaseHelper {
         val accountId = accountRepository.resolveAccountId(packageName)
         var authData = authProvider.getAuthData(accountId)
-        if (authData == null || !AuthHelper.isValid(authData)) {
+        if (authData == null || !AuthHelper.using(httpClient).isValid(authData)) {
             // Refresh the resolved account; propagate failure instead of silently falling back to
             // a different account, which would purchase a bound app under the wrong identity.
             authData = authProvider.refresh(accountId).getOrElse { error ->

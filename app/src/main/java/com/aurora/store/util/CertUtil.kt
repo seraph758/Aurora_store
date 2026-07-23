@@ -105,8 +105,8 @@ object CertUtil {
             } == true
 
             return hasFakePackageSignature
-        } catch (exception: Exception) {
-            Log.e(TAG, "Failed to check origin for $PACKAGE_NAME_GMS", exception)
+        } catch (_: Exception) {
+            Log.e(TAG, "Failed to check origin for $PACKAGE_NAME_GMS")
             false
         }
     }
