@@ -6,6 +6,7 @@
 
 package com.aurora.store.compose.ui.details
 
+import android.util.Base64
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,22 +25,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import android.util.Base64
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.fromHtml
-import com.aurora.extensions.copyToClipBoard
-import com.aurora.extensions.toast
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewWrapper
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.aurora.extensions.adaptiveNavigationIcon
+import com.aurora.extensions.copyToClipBoard
 import com.aurora.extensions.isWindowCompact
+import com.aurora.extensions.toast
 import com.aurora.gplayapi.data.models.App
 import com.aurora.store.R
 import com.aurora.store.compose.composable.Info
@@ -168,9 +168,8 @@ private fun AppDependencies(dependencies: List<App>, onNavigateTo: (Destination)
 }
 
 @OptIn(ExperimentalStdlibApi::class)
-private fun decodeBase64UrlToHex(base64Url: String): String {
-    return Base64.decode(base64Url, Base64.URL_SAFE).toHexString()
-}
+private fun decodeBase64UrlToHex(base64Url: String) =
+    Base64.decode(base64Url, Base64.URL_SAFE).toHexString()
 
 /**
  * Composable to show more information about the app that maybe advanced
