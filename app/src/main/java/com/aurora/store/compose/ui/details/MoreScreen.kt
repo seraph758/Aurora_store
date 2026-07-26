@@ -24,11 +24,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import android.util.Base64
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.fromHtml
+import com.aurora.extensions.copyToClipBoard
+import com.aurora.extensions.toast
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewWrapper
@@ -163,6 +167,11 @@ private fun AppDependencies(dependencies: List<App>, onNavigateTo: (Destination)
     }
 }
 
+@OptIn(ExperimentalStdlibApi::class)
+private fun decodeBase64UrlToHex(base64Url: String): String {
+    return Base64.decode(base64Url, Base64.URL_SAFE).toHexString()
+}
+
 /**
  * Composable to show more information about the app that maybe advanced
  */
@@ -189,6 +198,27 @@ private fun AppInfoMore(app: App) {
         ),
         description = AnnotatedString(text = app.contentRating.title)
     )
+
+    val certHashes = app.certificateSetList.mapNotNull { it.sha256.takeIf { s -> s.isNotBlank() } }
+        .map { decodeBase64UrlToHex(it) }
+    if (certHashes.isNotEmpty()) {
+        val context = LocalContext.current
+        certHashes.forEachIndexed { index, certHash ->
+            val title = if (certHashes.size == 1) {
+                stringResource(R.string.details_more_certificate_hash)
+            } else {
+                "${stringResource(R.string.details_more_certificate_hash)} ${index + 1}"
+            }
+            Info(
+                title = AnnotatedString(text = title),
+                description = AnnotatedString(text = certHash),
+                onClick = {
+                    context.copyToClipBoard(certHash)
+                    context.toast(R.string.toast_clipboard_copied)
+                }
+            )
+        }
+    }
 
     app.appInfo.appInfoMap.forEach { (title, subtitle) ->
         Info(
