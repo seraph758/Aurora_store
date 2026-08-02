@@ -625,4 +625,5 @@
     <string name="manual_download_select_version">Sürüm seç</string>
     <string name="manual_download_no_versions">Bilinen sürüm bulunamadı</string>
     <string name="manual_download_availability_warning">Bazı sürümler indirilebilir olmayabilir veya aygıtınızla uyumsuz olabilir.</string>
+    <string name="details_more_certificate_hash">Sertifika sağlama toplamı</string>
 </resources>

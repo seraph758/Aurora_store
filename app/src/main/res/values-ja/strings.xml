@@ -473,4 +473,8 @@
     <string name="account_remove">削除</string>
     <string name="account_remove_title">アカウントを削除しますか？</string>
     <string name="account_remove_message">%1$sをAurora Storeから削除しますか？</string>
+    <string name="account_add">アカウントを追加する</string>
+    <string name="account_set_default_message">設定したデフォルトアカウントを使用するようにAurora Storeが再起動します。</string>
+    <string name="account_switching">アカウトを切り替えます…</string>
+    <string name="account_adding">アカウントを追加します…</string>
 </resources>

@@ -546,8 +546,8 @@
     <string name="pref_notification_categories_desc">Choisir le son et la priorité pour chaque type de notification</string>
     <string name="pref_notification_disabled">Les notifications sont désactivées</string>
     <string name="pref_notification_disabled_desc">Appuyez pour activer les notifications pour Aurora Store</string>
-    <string name="updates_self_header">Auto-mise à jour</string>
-    <string name="pref_self_update">Auto-mise à jour</string>
+    <string name="updates_self_header">Mise à jour automatique</string>
+    <string name="pref_self_update">Mise à jour automatique</string>
     <string name="updates_self_desc">Une nouvelle version de Aurora Store est disponible</string>
     <string name="status_installing">Installation</string>
     <string name="status_installed">Installé</string>
@@ -631,4 +631,5 @@
     <string name="manual_download_select_version">Sélectionnez une version</string>
     <string name="manual_download_no_versions">Aucune version connue n\'a été trouvée</string>
     <string name="manual_download_availability_warning">Certaines versions peuvent ne pas être disponibles au téléchargement ou être incompatibles avec votre appareil.</string>
+    <string name="details_more_certificate_hash">Empreinte numérique du certificat</string>
 </resources>

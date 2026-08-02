@@ -65,7 +65,7 @@
     <string name="action_later">Пізніше</string>
     <string name="action_join">Приєднатися</string>
     <string name="action_installing">Установлення</string>
-    <string name="action_installations">Установлення</string>
+    <string name="action_installations">Встановлення</string>
     <string name="action_install">Установити</string>
     <string name="action_ignore">Знехтувати</string>
     <string name="action_grant">Надати</string>
@@ -77,7 +77,7 @@
     <string name="action_filter_misc">Різне</string>
     <string name="action_filter_gsf_dependent_apps">Залежні від GSF</string>
     <string name="action_filter_downloads">Завантаження</string>
-    <string name="action_filter_apps_with_ads">Застосуноки з рекламою</string>
+    <string name="action_filter_apps_with_ads">Застосунки з рекламою</string>
     <string name="action_filter_apply">Застосувати</string>
     <string name="action_filter_all">Усі</string>
     <string name="action_filter">Фільтри</string>
@@ -394,7 +394,7 @@
     <string name="toast_black_import_failed">Не вдалось імпортувати чорний список!</string>
     <string name="toast_black_export_failed">Не вдалось експортувати чорний список!</string>
     <string name="toast_black_export_success">Чорний список експортовано!</string>
-    <string name="action_select_all">Обрати все</string>
+    <string name="action_select_all">Вибрати все</string>
     <string name="toast_black_import_success">Чорний список імпортовано!</string>
     <string name="status_verifying">Перевірка</string>
     <string name="action_unarchive">Розархівувати</string>
@@ -442,11 +442,11 @@
     <string name="microg_privacy_policy">Ознайомитися з Політикою приватності microG</string>
     <string name="microg_license_agreement">Прочитати ліцензію та угоду microG</string>
     <string name="microg_website">Відвідати вебсайт проєкту microG</string>
-    <string name="details_data_safety_collect">Дані, які може збирати цей додаток</string>
-    <string name="details_data_safety_collect_none">Розробник стверджує, що цей додаток не збирає дані користувачів.</string>
-    <string name="details_data_safety_shared">Дані, які може ділитися ця програма</string>
-    <string name="details_data_safety_share_none">Розробник стверджує, що цей додаток не передає дані користувачів іншим компаніям чи організаціям.</string>
-    <string name="exodus_tracker_desc">Ця версія програми може містити більше трекерів, яких ще немає в базі даних Exodus Privacy.</string>
+    <string name="details_data_safety_collect">Дані, які може збирати цей застосунок</string>
+    <string name="details_data_safety_collect_none">Розробник стверджує, що цей застосунок не збирає дані користувачів.</string>
+    <string name="details_data_safety_shared">Дані, якими може ділитися цей застосунок</string>
+    <string name="details_data_safety_share_none">Розробник стверджує, що цей застосунок не передає дані користувачів іншим компаніям чи організаціям.</string>
+    <string name="exodus_tracker_desc">Ця версія застосунку може містити більше трекерів, яких ще немає в базі даних Exodus Privacy.</string>
     <string name="exodus_report_trackers"><xliff:g id="number_of_trackers">%1$d</xliff:g> відомих трекерів знайдено в <xliff:g id="app_version_name">%2$s</xliff:g></string>
     <string name="no_description">Опис недоступний</string>
     <string name="details_more_info">Більше інформації</string>
@@ -564,7 +564,7 @@
         <item quantity="many">Не вдалося встановити %d застосунків</item>
         <item quantity="other">Не вдалося встановити %d застосунків</item>
     </plurals>
-    <string name="action_buy">Придбати за %1$s</string>
+    <string name="action_buy">Придбати @ %1$s</string>
     <string name="action_install_all">Встановити все</string>
     <string name="details_review_comment_hint">Опишіть свій досвід (необов’язково)</string>
     <string name="details_review_edit">Редагувати відгук</string>
@@ -573,7 +573,7 @@
     <string name="details_review_delete_message">Ваша оцінка та відгук будуть видалені з Google Play.</string>
     <string name="details_your_review">Ваш відгук</string>
     <string name="confirm_deeplink_title">Підтвердити зовнішні посилання</string>
-    <string name="confirm_deeplink_summary">Запитувати перед відкриттям сторінки застосунку за посиланням, аби запобігти запуску Aurora Store як рекламу без вашої згоди.</string>
+    <string name="confirm_deeplink_summary">Запитувати перед відкриттям сторінки застосунку за посиланням, аби запобігти запуску Aurora Store як реклами без вашої згоди.</string>
     <string name="confirm_deeplink_sheet_title">Продовжити в Aurora Store?</string>
     <string name="confirm_deeplink_sheet_message">Зовнішній застосунок хоче відкрити Aurora Store</string>
     <string name="confirm_deeplink_sheet_source">Відкрито з %1$s</string>
@@ -591,7 +591,7 @@
         <item quantity="many">%1$d улюблених</item>
         <item quantity="other">%1$d улюблених</item>
     </plurals>
-    <string name="account_set_default">Встановити як типовий</string>
+    <string name="account_set_default">Встановити типовим</string>
     <string name="account_default">Типовий</string>
     <string name="account_remove">Вилучити</string>
     <string name="account_remove_title">Вилучити обліковий запис?</string>
@@ -637,4 +637,5 @@
     <string name="manual_download_select_version">Вибрати версію</string>
     <string name="manual_download_no_versions">Відомих версій не знайдено</string>
     <string name="manual_download_availability_warning">Деякі версії можуть бути недоступними для завантаження або несумісними з вашим пристроєм.</string>
+    <string name="details_more_certificate_hash">Хеш сертифіката</string>
 </resources>

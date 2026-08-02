@@ -611,4 +611,19 @@
         <item quantity="one">%1$d kasutajakonto värskendamine ei õnnestunud</item>
         <item quantity="other">%1$d kasutajakonto värskendamine ei õnnestunud</item>
     </plurals>
+    <string name="account_exists">Kasutajakonto on juba lisatud</string>
+    <string name="action_update_anyway">Uuenda ikkagi</string>
+    <string name="exodus_report_history">Versioonide ajalugu</string>
+    <string name="exodus_history_version">%1$s (%2$s)</string>
+    <string name="exodus_history_subtitle">%1$s • %2$d jälitajat</string>
+    <string name="exodus_latest">Viimane</string>
+    <string name="pref_updates_warn_trackers">Rakenduste uuendamisel teavita uutest lisandunud jälitajatest</string>
+    <string name="manual_download_no_versions">Ühtegi teadaolevat versiooni ei leidu</string>
+    <string name="manual_download_availability_warning">Mõned versioonid ei pruugi olla allalaadimiseks saadaval või ei pruugi sinu seadmega ühilduda.</string>
+    <string name="details_more_certificate_hash">Sertifikaadi räsi</string>
+    <string name="pref_updates_warn_trackers_desc">Näita enne uuendamist hoiatust, kui uude versiooni on lisandunud jälitajaid, mida senises versioonis ei leidu</string>
+    <string name="tracker_warning_title">Tuvastasin uued jälitajad</string>
+    <string name="tracker_warning_desc">Selle uuendusega lisandub jälitajaid, mida paigaldatud versioonis pole:</string>
+    <string name="manual_download_lookup">Otsi versiooni</string>
+    <string name="manual_download_select_version">Vali versioon</string>
 </resources>
