@@ -477,4 +477,5 @@
     <string name="account_set_default_message">設定したデフォルトアカウントを使用するようにAurora Storeが再起動します。</string>
     <string name="account_switching">アカウトを切り替えます…</string>
     <string name="account_adding">アカウントを追加します…</string>
+    <string name="account_set_default">デフォルトに設定する</string>
 </resources>
