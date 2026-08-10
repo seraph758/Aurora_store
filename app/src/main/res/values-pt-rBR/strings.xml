@@ -12,7 +12,7 @@
     <string name="title_download_playstore">Play Store</string>
     <string name="title_download_manager">Downloads</string>
     <string name="title_apps">Apps</string>
-    <string name="pref_install_mode_services">Aurora Services (Depreciado)</string>
+    <string name="pref_install_mode_services">Aurora Services (descontinuado)</string>
     <string name="action_filter_downloads">Downloads</string>
     <string name="about_telegram">Telegram</string>
     <string name="about_paypal">PayPal</string>
@@ -201,7 +201,7 @@
     <string name="pref_install_mode_summary">Selecione o modo de instalação de APKs</string>
     <string name="pref_install_mode_session">Instalador de sessão</string>
     <string name="pref_install_mode_root">Instalador root</string>
-    <string name="pref_install_mode_native">Instalador nativo (Depreciado)</string>
+    <string name="pref_install_mode_native">Instalador nativo (descontinuado)</string>
     <string name="pref_install_delete_title">Apagar APK após a instalação</string>
     <string name="pref_install_delete_summary">Os APKs baixados serão apagados após a instalação</string>
     <string name="pref_filter_fdroid_title">Filtrar apps do F-Droid</string>
@@ -233,9 +233,9 @@
     <string name="session_init">Deixando tudo certo…</string>
     <string name="download_paused">Pausado • <xliff:g id="completed_downloads">%1$d</xliff:g> / <xliff:g id="all_downloads">%2$d</xliff:g></string>
     <string name="action_import">Importar</string>
-    <string name="download_eta_hrs">%1$dh %2$dm %3$ds restando</string>
-    <string name="download_eta_min">%1$dm %2$ds restando</string>
-    <string name="download_eta_sec">%1$ds restando</string>
+    <string name="download_eta_hrs">%1$dh %2$dm %3$ds restantes</string>
+    <string name="download_eta_min">%1$dm %2$ds restantes</string>
+    <string name="download_eta_sec">%1$ds restantes</string>
     <string name="session_good">Tudo certo.</string>
     <string name="session_login_failed_google">Não foi possível se conectar pelo Google</string>
     <string name="session_verifying">Verificando a sessão</string>
@@ -259,7 +259,7 @@
     <string name="server_maintenance">O servidor está fora do ar para manutenção</string>
     <string name="error">Ocorreu um erro!</string>
     <string name="update_available">atualização disponível</string>
-    <string name="search_hint">Buscar por apps &amp; jogos</string>
+    <string name="search_hint">Buscar por apps e jogos</string>
     <string name="expand">Expandir</string>
     <string name="notification_channel_updates">Notificações de atualização</string>
     <string name="notification_updates_available_1"><xliff:g id="apps_count">%1$d</xliff:g> atualização disponível</string>
@@ -348,7 +348,7 @@
     <string name="session_login">Conecte-se à sua conta do Google Play</string>
     <string name="about_aurora_store_title">Sobre a Aurora Store</string>
     <string name="about_aurora_store_subtitle">Saiba mais sobre a Aurora Store</string>
-    <string name="about_aurora_store_summary">A Aurora Store permite que você busque e instale apps da Google Play Store oficial. Você pode ver as descrições dos apps, capturas de tela, atualizações, os comentários dos usuários e baixar o APK diretamente da Google Play no seu dispositivo. Para usar a Aurora Store, conecte-se a uma conta do Google Play ao abrir e configurar pela primeira vez.\n\nDiferentemente de uma loja de apps tradicional, a Aurora Store não tem propriedade, licencia ou distribui nenhum app. Todos os apps, as descrições dos apps, capturas de tela e outros conteúdos da Aurora Store são acessados, baixados e/ou exibidos do Google Play. A Aurora Store funciona exatamente como uma porta ou navegador, permitindo que você entre na sua conta do Google Play e encontre os apps do Google Play.\n\nObserva que a Aurora Store não possui qualquer aprovação, patrocínio ou autorização do Google, Google Play, apps baixados pela Aurora Store ou qualquer desenvolvedor dos apps, nem possui qualquer afiliação, cooperação ou conexão com eles.</string>
+    <string name="about_aurora_store_summary">A Aurora Store permite que você busque e instale apps da Google Play Store oficial. Você pode ver as descrições dos apps, capturas de tela, atualizações, os comentários dos usuários e baixar o APK diretamente da Google Play no seu dispositivo. Para usar a Aurora Store, conecte-se a uma conta do Google Play ao abrir e configurar pela primeira vez.\n\nDiferentemente de uma loja de apps tradicional, a Aurora Store não tem propriedade, licencia ou distribui nenhum app. Todos os apps, as descrições dos apps, capturas de tela e outros conteúdos da Aurora Store são acessados, baixados e/ou exibidos do Google Play. A Aurora Store funciona exatamente como uma porta ou navegador, permitindo que você entre na sua conta do Google Play e encontre os apps do Google Play.\n\nObserve que a Aurora Store não possui qualquer aprovação, patrocínio ou autorização do Google, Google Play, apps baixados pela Aurora Store ou qualquer desenvolvedor dos apps, nem possui qualquer afiliação, cooperação ou conexão com eles.</string>
     <string name="toast_app_unavailable">App não disponível para seu dispositivo</string>
     <string name="toast_fav_import_failed">Falha ao importar os curtidos!</string>
     <string name="details_no_favourites">Não há apps curtidos</string>
@@ -570,7 +570,7 @@
     <string name="details_review_delete_message">A sua avaliação será removida do Google Play.</string>
     <string name="details_your_review">Sua avaliação</string>
     <string name="confirm_deeplink_title">Confirmar links externos</string>
-    <string name="confirm_deeplink_summary">Perguntar antes de abrir a página de um app a partir de um link, impede que anúncios abram a Aurora sem seu consentimento.</string>
+    <string name="confirm_deeplink_summary">Perguntar antes de abrir a página de um app a partir de um link, impedindo que anúncios abram a Aurora sem seu consentimento.</string>
     <string name="confirm_deeplink_sheet_title">Continuar na Aurora Store?</string>
     <string name="confirm_deeplink_sheet_message">Um app externo quer abrir a Aurora Store</string>
     <string name="confirm_deeplink_sheet_source">Aberto por %1$s</string>

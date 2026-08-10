@@ -6,4 +6,4 @@
 • Notificaciones rediseñadas con resúmenes agrupados y ajustes
 • Pantalla de actualizaciones renovada; las actualizaciones automáticas ahora aparecen en la lista
 • Descargas e instalaciones más confiables y soporte para el instalador de microG
-•Corrección de errores y actualización de traducciones
+• Corrección de errores y actualización de traducciones
