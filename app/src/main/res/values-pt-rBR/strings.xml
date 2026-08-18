@@ -169,7 +169,7 @@
     <string name="about_xda_summary">Veja a publicação da Aurora Store no XDA para discussões ou sugestões.</string>
     <string name="about_telegram_summary">Junte-se ao grupo de suporte da Aurora para discussões ou sugestões.</string>
     <string name="about_paypal_summary">Doar via PayPal</string>
-    <string name="about_libera_summary">Torne-se um patrono no Liberapay</string>
+    <string name="about_libera_summary">Torne-se um apoiador no Liberapay</string>
     <string name="about_gitlab_summary">Baixe o código-fonte da Aurora Store do Aurora OSS no GitLab.</string>
     <string name="about_fdroid_summary">Instale a Aurora Store pelo F-Droid.</string>
     <string name="about_bitcoin_eth_summary">Doar via Ethereum (ETH)</string>
@@ -394,7 +394,7 @@
     <string name="filter_latest">Mais recentes</string>
     <string name="toast_black_import_failed">Falha ao importar a lista de aplicativos com atualizações bloqueadas!</string>
     <string name="toast_black_export_failed">Falha ao exportar a lista de apps com atualizações bloqueadas!</string>
-    <string name="toast_black_import_success">A lista de apps com atualizações bloqueadasrfoi importada!</string>
+    <string name="toast_black_import_success">A lista de apps com atualizações bloqueadas foi importada!</string>
     <string name="toast_black_export_success">A lista de aplicativos com atualizações bloqueadas foi exportada!</string>
     <string name="action_unarchive">Desarquivar</string>
     <string name="status_verifying">Verificando</string>
