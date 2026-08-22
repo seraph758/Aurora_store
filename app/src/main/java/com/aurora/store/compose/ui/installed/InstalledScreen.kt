@@ -24,7 +24,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -105,7 +104,6 @@ private fun ScreenContent(
      */
     var initialLoad by rememberSaveable { mutableStateOf(true) }
     var sheetVisible by remember { mutableStateOf(false) }
-    val haptics = LocalHapticFeedback.current
 
     Scaffold(
         topBar = {
