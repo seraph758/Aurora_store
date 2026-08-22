@@ -128,6 +128,8 @@
     <string name="action_update_anyway">Update anyway</string>
     <string name="action_view_on_play">"View on Play Store"</string>
     <string name="action_whitelist">"Whitelist"</string>
+    <string name="action_mark_favourite">"Mark favourite"</string>
+    <string name="action_unmark_favourite">"Unmark favourite"</string>
     <string name="details_beta">"Beta program"</string>
     <string name="details_beta_subscribed">"You're a beta tester"</string>
     <string name="details_beta_available">"Join beta program?"</string>

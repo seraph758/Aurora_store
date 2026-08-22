@@ -24,6 +24,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -51,6 +52,8 @@ import com.aurora.store.compose.preview.ThemePreviewProvider
 import com.aurora.store.compose.ui.commons.InstalledAppMeta
 import com.aurora.store.compose.ui.commons.SortFilterSheet
 import com.aurora.store.compose.ui.commons.SortFilterState
+import com.aurora.store.compose.ui.installed.menu.InstalledMenu
+import com.aurora.store.compose.ui.installed.menu.MenuItem
 import com.aurora.store.viewmodel.all.InstalledViewModel
 import kotlin.random.Random
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -70,8 +73,13 @@ fun InstalledScreen(
         state = state,
         installers = installers,
         metadata = metadata,
+        isPackageSelected = viewModel::isPackageSelected,
         onStateChange = viewModel::updateState,
-        onNavigateTo = onNavigateTo
+        onNavigateTo = onNavigateTo,
+        onToggleSelectPackage = viewModel::toggleSelectedPackage,
+        onToggleSelectAllPackages = viewModel::toggleSelectAllPackages,
+        onToggleSelectedFavourite = viewModel::toggleSelectedFavourite,
+        onUninstallSelected = viewModel::uninstallSelectedFavourite
     )
 }
 
@@ -81,8 +89,13 @@ private fun ScreenContent(
     state: SortFilterState = SortFilterState(),
     installers: Map<String, String> = emptyMap(),
     metadata: Map<String, InstalledAppMeta> = emptyMap(),
+    isPackageSelected: (String) -> Boolean = { false },
     onStateChange: (SortFilterState) -> Unit = {},
-    onNavigateTo: (Destination) -> Unit = {}
+    onNavigateTo: (Destination) -> Unit = {},
+    onToggleSelectPackage: (String) -> Unit = {},
+    onToggleSelectAllPackages: (Boolean) -> Unit = {},
+    onToggleSelectedFavourite: (Boolean) -> Unit = {},
+    onUninstallSelected: () -> Unit = {}
 ) {
     /*
      * For some reason paging3 frequently out-of-nowhere invalidates the list which causes
@@ -92,6 +105,7 @@ private fun ScreenContent(
      */
     var initialLoad by rememberSaveable { mutableStateOf(true) }
     var sheetVisible by remember { mutableStateOf(false) }
+    val haptics = LocalHapticFeedback.current
 
     Scaffold(
         topBar = {
@@ -103,6 +117,15 @@ private fun ScreenContent(
                             painter = painterResource(R.drawable.ic_tune),
                             contentDescription = stringResource(R.string.installed_sort_filter)
                         )
+                    }
+                    InstalledMenu { menuItem ->
+                        when (menuItem) {
+                            MenuItem.SELECT_ALL -> onToggleSelectAllPackages(true)
+                            MenuItem.REMOVE_ALL -> onToggleSelectAllPackages(false)
+                            MenuItem.MARK_FAVOURITE -> onToggleSelectedFavourite(true)
+                            MenuItem.UNMARK_FAVOURITE -> onToggleSelectedFavourite(false)
+                            MenuItem.UNINSTALL -> onUninstallSelected()
+                        }
                     }
                 }
             )
@@ -148,11 +171,13 @@ private fun ScreenContent(
                                             lastUpdateTime = meta?.lastUpdateTime ?: 0L,
                                             installerLabel = meta?.installer
                                                 ?.let { installers[it] },
+                                            isSelected = isPackageSelected(app.packageName),
                                             onClick = {
                                                 onNavigateTo(
                                                     Destination.AppDetails(app.packageName)
                                                 )
-                                            }
+                                            },
+                                            onCheckedChange = { onToggleSelectPackage(app.packageName) }
                                         )
                                     }
                                 }

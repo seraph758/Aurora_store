@@ -23,6 +23,7 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import androidx.compose.runtime.mutableStateSetOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -38,9 +39,12 @@ import com.aurora.store.compose.ui.commons.applySort
 import com.aurora.store.compose.ui.commons.loadSortFilterState
 import com.aurora.store.compose.ui.commons.save
 import com.aurora.store.data.PageResult
+import com.aurora.store.data.installer.AppInstaller
 import com.aurora.store.data.paging.GenericPagingSource
 import com.aurora.store.data.paging.GenericPagingSource.Companion.manualPager
 import com.aurora.store.data.providers.BlacklistProvider
+import com.aurora.store.data.room.favourite.Favourite
+import com.aurora.store.data.room.favourite.FavouriteDao
 import com.aurora.store.util.PackageUtil
 import com.aurora.store.util.Preferences
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -55,10 +59,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import kotlin.collections.filter
 
 @HiltViewModel
 class InstalledViewModel @Inject constructor(
     blacklistProvider: BlacklistProvider,
+    private val favouriteDao: FavouriteDao,
     @ApplicationContext private val context: Context,
     private val webAppDetailsHelper: WebAppDetailsHelper
 ) : ViewModel() {
@@ -76,6 +82,12 @@ class InstalledViewModel @Inject constructor(
 
     private val _metadata = MutableStateFlow<Map<String, InstalledAppMeta>>(emptyMap())
     val metadata = _metadata.asStateFlow()
+
+    val selectedPackages = mutableStateSetOf<String>()
+
+    private val _appDetails: MutableMap<String, App> = mutableMapOf()
+
+    private val _displayedPackages = MutableStateFlow<Set<String>>(emptySet())
 
     /**
      * Enumerates installed packages and resolves per-package metadata used for sorting
@@ -118,15 +130,29 @@ class InstalledViewModel @Inject constructor(
                 val all = enrichedPackages.await()
                 val filteredSorted = all.applyFilter(state).applySort(state)
                 val chunks = filteredSorted.chunked(GenericPagingSource.DEFAULT_PAGE_SIZE)
+                val newDisplayedPackages = mutableSetOf<String>()
                 manualPager(pageSize = GenericPagingSource.DEFAULT_PAGE_SIZE) { page ->
                     val chunk = chunks.getOrNull(page - 1)
                         ?: return@manualPager PageResult(emptyList<App>(), hasMore = false)
                     val items = webAppDetailsHelper.getAppDetails(chunk.map { it.packageName })
+                    _appDetails.putAll(items.associateBy { it.packageName })
+                    newDisplayedPackages.addAll(items.map { it.packageName })
+                    if (page == chunks.size) {
+                        _displayedPackages.value = newDisplayedPackages.toSet()
+                    }
                     PageResult(items, hasMore = page < chunks.size)
                 }.flow
                     .distinctUntilChanged()
                     .cachedIn(viewModelScope)
                     .collect { _apps.value = it }
+            }
+        }
+
+        viewModelScope.launch {
+            // collect instead of collectLatest because
+            // canceling during filtering might cause inconsistent state
+            _displayedPackages.collect { displayedPackages ->
+                selectedPackages.retainAll(displayedPackages)
             }
         }
     }
@@ -142,6 +168,54 @@ class InstalledViewModel @Inject constructor(
         info.applicationInfo?.loadLabel(context.packageManager)?.toString() ?: packageName
     } catch (_: Exception) {
         packageName
+    }
+
+    fun isPackageSelected(packageName: String): Boolean {
+        return selectedPackages.contains(packageName)
+    }
+
+    fun toggleSelectedPackage(packageName: String) {
+        if (!selectedPackages.contains(packageName) && _displayedPackages.value.contains(packageName)) {
+            selectedPackages.add(packageName)
+        }
+    }
+
+    fun toggleSelectAllPackages(selectAll: Boolean) {
+        if (selectAll) {
+            selectedPackages.addAll(_displayedPackages.value)
+        } else {
+            selectedPackages.clear()
+        }
+    }
+
+    fun toggleSelectedFavourite(markFavourite: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (markFavourite) {
+                val favouritesToAdd =
+                    selectedPackages.mapNotNull { packageName ->
+                        _appDetails[packageName]
+                    }.map { app ->
+                        Favourite(
+                            packageName = app.packageName,
+                            displayName = app.displayName,
+                            iconURL = app.iconArtwork.url,
+                            mode = Favourite.Mode.MANUAL,
+                            added = System.currentTimeMillis()
+                        )
+                    }
+                favouriteDao.insertAll(favouritesToAdd)
+            } else {
+                favouriteDao.deleteAll(selectedPackages.toList())
+            }
+        }
+    }
+
+    fun uninstallSelectedFavourite() {
+        viewModelScope.launch {
+            selectedPackages.forEach {
+                AppInstaller.uninstall(context, it)
+            }
+        }
     }
 
     private data class EnrichedPackage(
