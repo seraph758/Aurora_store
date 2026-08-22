@@ -177,7 +177,9 @@ private fun ScreenContent(
                                                     Destination.AppDetails(app.packageName)
                                                 )
                                             },
-                                            onCheckedChange = { onToggleSelectPackage(app.packageName) }
+                                            onCheckedChange = {
+                                                onToggleSelectPackage(app.packageName)
+                                            }
                                         )
                                     }
                                 }

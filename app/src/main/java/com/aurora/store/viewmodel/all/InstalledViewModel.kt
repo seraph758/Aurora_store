@@ -51,6 +51,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
+import kotlin.collections.filter
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -59,7 +60,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import kotlin.collections.filter
 
 @HiltViewModel
 class InstalledViewModel @Inject constructor(
@@ -85,9 +85,9 @@ class InstalledViewModel @Inject constructor(
 
     val selectedPackages = mutableStateSetOf<String>()
 
-    private val _appDetails: MutableMap<String, App> = mutableMapOf()
+    private val appDetails: MutableMap<String, App> = mutableMapOf()
 
-    private val _displayedPackages = MutableStateFlow<Set<String>>(emptySet())
+    private val displayedPackages = MutableStateFlow<Set<String>>(emptySet())
 
     /**
      * Enumerates installed packages and resolves per-package metadata used for sorting
@@ -135,10 +135,10 @@ class InstalledViewModel @Inject constructor(
                     val chunk = chunks.getOrNull(page - 1)
                         ?: return@manualPager PageResult(emptyList<App>(), hasMore = false)
                     val items = webAppDetailsHelper.getAppDetails(chunk.map { it.packageName })
-                    _appDetails.putAll(items.associateBy { it.packageName })
+                    appDetails.putAll(items.associateBy { it.packageName })
                     newDisplayedPackages.addAll(items.map { it.packageName })
                     if (page == chunks.size) {
-                        _displayedPackages.value = newDisplayedPackages.toSet()
+                        displayedPackages.value = newDisplayedPackages.toSet()
                     }
                     PageResult(items, hasMore = page < chunks.size)
                 }.flow
@@ -151,7 +151,7 @@ class InstalledViewModel @Inject constructor(
         viewModelScope.launch {
             // collect instead of collectLatest because
             // canceling during filtering might cause inconsistent state
-            _displayedPackages.collect { displayedPackages ->
+            displayedPackages.collect { displayedPackages ->
                 selectedPackages.retainAll(displayedPackages)
             }
         }
@@ -170,19 +170,19 @@ class InstalledViewModel @Inject constructor(
         packageName
     }
 
-    fun isPackageSelected(packageName: String): Boolean {
-        return selectedPackages.contains(packageName)
-    }
+    fun isPackageSelected(packageName: String): Boolean = selectedPackages.contains(packageName)
 
     fun toggleSelectedPackage(packageName: String) {
-        if (!selectedPackages.contains(packageName) && _displayedPackages.value.contains(packageName)) {
+        if (!selectedPackages.contains(packageName) &&
+            displayedPackages.value.contains(packageName)
+        ) {
             selectedPackages.add(packageName)
         }
     }
 
     fun toggleSelectAllPackages(selectAll: Boolean) {
         if (selectAll) {
-            selectedPackages.addAll(_displayedPackages.value)
+            selectedPackages.addAll(displayedPackages.value)
         } else {
             selectedPackages.clear()
         }
@@ -193,7 +193,7 @@ class InstalledViewModel @Inject constructor(
             if (markFavourite) {
                 val favouritesToAdd =
                     selectedPackages.mapNotNull { packageName ->
-                        _appDetails[packageName]
+                        appDetails[packageName]
                     }.map { app ->
                         Favourite(
                             packageName = app.packageName,
