@@ -619,4 +619,5 @@
     <string name="manual_download_select_version">选择版本</string>
     <string name="manual_download_no_versions">没找到已知版本</string>
     <string name="manual_download_availability_warning">一些版本可能下载不了或者和你的设备不兼容。</string>
+    <string name="details_more_certificate_hash">证书哈希</string>
 </resources>

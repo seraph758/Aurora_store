@@ -346,7 +346,7 @@
     <string name="notification_channel_downloads">Latausilmoitukset</string>
     <string name="pref_vending_version_device">Oletus (laitteen asetuksista)</string>
     <string name="session_installer_desc">Suositeltu, sisäänrakennettu ja tukee kaikki Android-versioita</string>
-    <string name="am_installer_desc">Vaatii App Manager -sovelluksen, tarvitsee adb/root -tilan asennukseen, kun MIUI optimisaatio on päällä</string>
+    <string name="am_installer_desc">Vaatii App Manager -sovelluksen, tarvitsee adb/root -tilan asennukseen, kun miui optimisaatio on päällä</string>
     <string name="shizuku_installer_subtitle">Järjestelmän API:a suoraan adb/root -oikeuksilla käyttäen</string>
     <string name="manual_download_hint">Syötä versiokoodi jonka haluat ladata</string>
     <string name="pref_clear_device_owner_summary">Poistaa Aurora Storen laitteen omistajasovelluksena</string>
@@ -611,4 +611,19 @@
     <string name="installed_filter_all">Kaikki</string>
     <string name="installed_updated_at">Päivitetty <xliff:g id="when">%1$s</xliff:g></string>
     <string name="action_check">Tarkista</string>
+    <string name="account_exists">Käyttäjätili jo lisätty</string>
+    <string name="action_update_anyway">Päivitä silti</string>
+    <string name="exodus_report_history">Versio historia</string>
+    <string name="exodus_history_version">%1$s (%2$s)</string>
+    <string name="exodus_history_subtitle">%1$s • %2$d seuraimet</string>
+    <string name="exodus_latest">Viimeisin</string>
+    <string name="pref_updates_warn_trackers">Ilmoita uusista seuraimista sovelluspäivityksissä</string>
+    <string name="pref_updates_warn_trackers_desc">Näytä huomautuksen ennen päivitystä, kun uusi versio sisältää seuraimia, joita ei ollut ladatussa versiossa</string>
+    <string name="tracker_warning_title">Havaittu uusia seuraimia</string>
+    <string name="tracker_warning_desc">Tämä päivitys lisää seuraimia, joita ei ollut ladatussa versiossa:</string>
+    <string name="manual_download_lookup">Etsi versioita</string>
+    <string name="manual_download_select_version">Valitse versio</string>
+    <string name="manual_download_no_versions">Ei tunnettuja versioita löydetty</string>
+    <string name="manual_download_availability_warning">Jotkut versiot eivät saata olla saatavilla latausta varten tai sopimattomia laitteesi kanssa.</string>
+    <string name="details_more_certificate_hash">Varmenteen sormenjälki</string>
 </resources>

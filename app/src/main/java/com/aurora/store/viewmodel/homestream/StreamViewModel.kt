@@ -121,7 +121,8 @@ class StreamViewModel @Inject constructor(
 
         val mergedCluster = oldCluster.copy(
             clusterNextPageUrl = newCluster.clusterNextPageUrl,
-            clusterAppList = oldCluster.clusterAppList + newCluster.clusterAppList
+            clusterAppList = (oldCluster.clusterAppList + newCluster.clusterAppList)
+                .distinctBy { it.packageName }
         )
 
         val updatedClusters = bundle.streamClusters.toMutableMap().apply {

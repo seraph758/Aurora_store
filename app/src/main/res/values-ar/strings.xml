@@ -649,4 +649,5 @@
     <string name="manual_download_select_version">حدّد إصدار</string>
     <string name="manual_download_no_versions">لم يُعثر على أي إصدارات معروفة</string>
     <string name="manual_download_availability_warning">قد تكون بعض الإصدارات غير متاحة للتنزيل أو غير متوافقة مع جهازك.</string>
+    <string name="details_more_certificate_hash">تجزئة الشهادة</string>
 </resources>

@@ -637,4 +637,5 @@
     <string name="manual_download_no_versions">Nie znaleziono żadnych znanych wersji</string>
     <string name="manual_download_lookup">Zobacz dostępne wersje</string>
     <string name="manual_download_availability_warning">Niektóre wersje mogą być niedostępne do pobrania lub mogą nie działać na Twoim urządzeniu.</string>
+    <string name="details_more_certificate_hash">Hash certyfikatu</string>
 </resources>

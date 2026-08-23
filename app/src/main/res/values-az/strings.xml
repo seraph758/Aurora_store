@@ -240,7 +240,7 @@
     <string name="onboarding_permission_notifications">Bildirişlər</string>
     <string name="pref_install_mode_shizuku">Shizuku quraşdırıcısı</string>
     <string name="about_wiki_title">Wiki</string>
-    <string name="about_wiki_summary">Tez-tez verilən suallara (FAQ), problemlərin həlli addımlarına və s. cavablar tapın</string>
+    <string name="about_wiki_summary">Tez-tez verilən suallara (F.A.Q), problemlərin həlli addımlarına və s. cavablar tapın</string>
     <string name="pref_updates_incompatible">Uğursuz olan yeniləmələri göstər</string>
     <string name="pref_updates_incompatible_desc">Uyğunsuz və ya deaktiv edilmiş, lakin quraşdırıla bilməyən tətbiqlər üçün yeniləmələri göstərin.</string>
     <string name="onboarding_permission_doze_desc">Tətbiqləri arxa planda endirmək və yeniləmək üçün Aurora Store-a icazə ver</string>
@@ -264,7 +264,7 @@
     <string name="session_verifying">Hesab təsdiqlənir</string>
     <string name="session_scrapped">Son hesab ləğv edildi</string>
     <string name="session_good">Hər şey yaxşıdır.</string>
-    <string name="pref_aurora_only_desc">Aurora Mağazasından kənar mənbələrdən quraşdırılmış tətbiqlər üçün yeniləmələri yoxlamayın.</string>
+    <string name="pref_aurora_only_desc">Aurora Mağazasından kənar mənbələrdən quraşdırılmış tətbiqlər üçün yeniləmələri yoxlamayın</string>
     <string name="session_login">Xahiş olunur, Google Play hesabınıza daxil olun</string>
     <string name="session_login_failed_google">Google ilə daxil olmaq olmadı</string>
     <string name="notification_channel_export">Tətbiq ixracı bildirişi</string>
@@ -377,7 +377,7 @@
     <string name="pref_dispenser_title">Mütəxəssisləri idarə edin</string>
     <string name="add_dispenser_summary">Aurora Store-a nişan yaradıcı əlavə edin. Nişan yaradıcılar gizli şəkildə daxil olmaq üçün Aurora Store-a hesab etimadnaməsini təqdim edir.</string>
     <string name="add_dispenser_hint">Yaradıcı URL</string>
-    <string name="remove_dispenser_title">Paylayıcını çıxarın.</string>
+    <string name="remove_dispenser_title">Paylayıcı silinsin?</string>
     <string name="remove_dispenser_summary">Yaradıcını çıxarmaq istəyirsiniz\"<xliff:g id="url"> %1$s</xliff:g> \"?</string>
     <string name="add">Əlavə et</string>
     <string name="remove">Sil</string>
@@ -447,7 +447,7 @@
     <string name="pref_network_proxy_desc">Proksi konfiqurasiyasına bax və idarə et</string>
     <string name="pref_common_advanced">Qabaqcıl</string>
     <string name="pref_updates_restrictions_title">Birbaşa yeniləmə məhdudiyyətləri</string>
-    <string name="pref_updates_restrictions_desc">Avtomatik yeniləmələr üçün cihaz məhdudiyyətlərini konfiqurasiya edin</string>
+    <string name="pref_updates_restrictions_desc">Avtomatlaşdırılan yeniləmələr üçün cihaz məhdudiyyətlərini tənzimlə</string>
     <string name="pref_updates_restrictions_metered">Yalnız ölçülməyən şəbəkələrdə</string>
     <string name="pref_updates_restrictions_idle">Cihaz boş olduqda</string>
     <string name="pref_updates_restrictions_battery">Batareya zəif olmayanda</string>
@@ -611,4 +611,19 @@
         <item quantity="one">%d tətbiq uğursuz oldu</item>
         <item quantity="other">%d tətbiq uğursuz oldu</item>
     </plurals>
+    <string name="account_exists">Hesab artıq əlavə edilib</string>
+    <string name="action_update_anyway">Yenə də yenilə</string>
+    <string name="exodus_report_history">Versiya tarixçəsi</string>
+    <string name="exodus_history_version">%1$s (%2$s)</string>
+    <string name="exodus_history_subtitle">%1$s • %2$d izləyici</string>
+    <string name="exodus_latest">Ən son</string>
+    <string name="pref_updates_warn_trackers">Tətbiq yeniləmələrində yeni izləyicilər barədə xəbər ver</string>
+    <string name="pref_updates_warn_trackers_desc">Yeni versiya quraşdırılmış versiyada olmayan izləyiciləri əlavə etdikdə yeniləmədən əvvəl xəbərdarlıq göstər</string>
+    <string name="tracker_warning_title">Yeni izləyicilər aşkarlandı</string>
+    <string name="tracker_warning_desc">Bu yeniləmə quraşdırılmış versiyada olmayan izləyiciləri əlavə edir:</string>
+    <string name="manual_download_lookup">Versiyalara bax</string>
+    <string name="manual_download_select_version">Versiya seç</string>
+    <string name="manual_download_no_versions">Məlum versiya tapılmadı</string>
+    <string name="manual_download_availability_warning">Bəzi versiyaların yüklənilməsi əlçatmaz ola bilər və ya cihazınızla uyuşmaz ola bilər.</string>
+    <string name="details_more_certificate_hash">Sertifikat hash-i</string>
 </resources>

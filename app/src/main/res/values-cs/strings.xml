@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="action_update">Instalovat</string>
+    <string name="action_update">Aktualizovat</string>
     <string name="action_blacklist">Černá listina</string>
     <string name="action_blacklist_add">Přidat na černou listinu</string>
     <string name="title_blacklist_manager">Správa černé listiny</string>
@@ -153,7 +153,7 @@
     <string name="details_beta_available">Připojit se k beta programu?</string>
     <string name="details_beta_subscribed">Jste beta tester</string>
     <string name="details_beta">Beta program</string>
-    <string name="action_update_all">Aktual. vše</string>
+    <string name="action_update_all">Aktualizovat vše</string>
     <string name="action_info">Informace o aplikaci</string>
     <string name="action_uninstall">Odinstalovat</string>
     <string name="action_share">Sdílet</string>
@@ -637,4 +637,5 @@
     <string name="manual_download_select_version">Vybrat verzi</string>
     <string name="manual_download_no_versions">Nenalezeny žádné známé verze</string>
     <string name="manual_download_availability_warning">Některé verze nemusejí být dostupné ke stažení nebo mohou být nekompatibilní s vaším zařízením.</string>
+    <string name="details_more_certificate_hash">Hash certifikátu</string>
 </resources>
