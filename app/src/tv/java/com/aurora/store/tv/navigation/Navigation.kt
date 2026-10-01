@@ -22,6 +22,7 @@ import com.aurora.store.tv.ui.details.AppDetailsScreen
 import com.aurora.store.tv.ui.home.HomeScreen
 import com.aurora.store.tv.ui.login.LoginScreen
 import com.aurora.store.tv.ui.onboarding.OnboardingScreen
+import com.aurora.store.tv.ui.spoof.SpoofScreen
 
 /**
  * Navigation display for TV screens.
@@ -89,12 +90,23 @@ fun Navigation(startDestination: Screen) {
 
             entry<Screen.Home> {
                 HomeScreen(
-                    onAppClick = { pkg -> backStack.add(Screen.AppDetails(pkg)) }
+                    onAppClick = { pkg -> backStack.add(Screen.AppDetails(pkg)) },
+                    onSpoofClick = { backStack.add(Screen.Spoof) }
                 )
             }
 
             entry<Screen.AppDetails> { key ->
                 AppDetailsScreen(packageName = key.packageName)
+            }
+
+            entry<Screen.Spoof> {
+                SpoofScreen(
+                    onRestart = {
+                        // The session was signed out; Login rebuilds auth with the new spoof.
+                        backStack.clear()
+                        backStack.add(Screen.Login)
+                    }
+                )
             }
         }
     )
