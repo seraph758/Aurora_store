@@ -38,7 +38,7 @@ import kotlinx.coroutines.android.awaitFrame
 private enum class HomeSection { APPS, GAMES, SEARCH, UPDATES }
 
 @Composable
-fun HomeScreen(onAppClick: (String) -> Unit) {
+fun HomeScreen(onAppClick: (String) -> Unit, onSpoofClick: () -> Unit) {
     // Saved so navigating into an app's details and back restores the section the user left from
     // (e.g. Search), rather than resetting to Apps.
     var section by rememberSaveable { mutableStateOf(HomeSection.APPS) }
@@ -146,6 +146,20 @@ fun HomeScreen(onAppClick: (String) -> Unit) {
                     }
                 ) {
                     Text(stringResource(R.string.title_updates))
+                }
+
+                // Opens a separate destination rather than switching sections, so never "selected".
+                NavigationDrawerItem(
+                    selected = false,
+                    onClick = onSpoofClick,
+                    leadingContent = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_spoof),
+                            contentDescription = null
+                        )
+                    }
+                ) {
+                    Text(stringResource(R.string.title_spoof_manager))
                 }
             }
         }

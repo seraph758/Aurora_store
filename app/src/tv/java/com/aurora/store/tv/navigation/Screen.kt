@@ -25,4 +25,7 @@ sealed class Screen : NavKey {
 
     @Serializable
     data class AppDetails(val packageName: String) : Screen()
+
+    @Serializable
+    data object Spoof : Screen()
 }
