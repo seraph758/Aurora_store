@@ -37,6 +37,8 @@ import com.aurora.store.util.PathUtil
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
@@ -61,6 +63,8 @@ class DownloadHelper @Inject constructor(
         private const val DOWNLOAD_APP = "DOWNLOAD_APP"
         private const val DOWNLOAD_UPDATE = "DOWNLOAD_UPDATE"
         private const val VERSION_CODE = "VERSION_CODE"
+
+        private val QUEUE_SWEEP_INTERVAL = 30.seconds
     }
 
     // Single stable StateFlow shared across consumers. Previously a `get()` accessor that
@@ -115,20 +119,46 @@ class DownloadHelper @Inject constructor(
         }.invokeOnCompletion {
             observeDownloads()
             observeInstalls()
+            sweepStalledQueue()
         }
     }
 
+    /**
+     * Reconciles rows stuck at the install phase. The install session is owned by the
+     * system, so if the process (or the device) dies after committing the session, the
+     * [InstallerEvent.Installed]/[InstallerEvent.Failed] status never arrives and the row
+     * stays in [DownloadStatus.INSTALLING] forever. Reconcile by what is verifiable on
+     * disk at startup:
+     * - package already at that version: install succeeded, mark [DownloadStatus.INSTALLED]
+     *   (same as [finalizeStaleSelfUpdate], for third-party packages);
+     * - not installed but APKs still on disk: the pending install was lost, re-arm it as
+     *   [DownloadStatus.AWAITING_INSTALL] for a retry;
+     * - not installed and APKs gone (auto-delete or a failure that never reported): mark
+     *   [DownloadStatus.FAILED] so the next update check re-downloads.
+     */
     private suspend fun recoverStalledInstalls(downloads: List<Download>) {
         downloads.filter {
             it.packageName != context.packageName &&
-                it.status in setOf(DownloadStatus.COMPLETED, DownloadStatus.INSTALLING) &&
-                it.hasDownloadedFiles(context) &&
-                !PackageUtil.isInstalled(context, it.packageName, it.versionCode)
+                it.status in setOf(DownloadStatus.COMPLETED, DownloadStatus.INSTALLING)
         }.forEach {
-            Log.i(TAG, "Recovering stalled install for ${it.packageName}")
-            downloadDao.updateStatus(it.packageName, DownloadStatus.AWAITING_INSTALL)
-            WorkManager.getInstance(context)
-                .cancelAllWorkByTag("$PACKAGE_NAME:${it.packageName}")
+            when {
+                PackageUtil.isInstalled(context, it.packageName, it.versionCode) -> {
+                    Log.i(TAG, "Finalizing stuck install for ${it.packageName}")
+                    downloadDao.updateStatus(it.packageName, DownloadStatus.INSTALLED)
+                }
+
+                it.hasDownloadedFiles(context) -> {
+                    Log.i(TAG, "Recovering stalled install for ${it.packageName}")
+                    downloadDao.updateStatus(it.packageName, DownloadStatus.AWAITING_INSTALL)
+                    WorkManager.getInstance(context)
+                        .cancelAllWorkByTag("$PACKAGE_NAME:${it.packageName}")
+                }
+
+                else -> {
+                    Log.i(TAG, "Failing fileless stalled install for ${it.packageName}")
+                    downloadDao.updateStatus(it.packageName, DownloadStatus.FAILED)
+                }
+            }
         }
     }
 
@@ -207,7 +237,13 @@ class DownloadHelper @Inject constructor(
                 if (list.none { it.status in DownloadStatus.processing }) {
                     list.find { it.status == DownloadStatus.QUEUED }
                         ?.let { queuedDownload ->
-                            Log.i(TAG, "Enqueued download worker for ${queuedDownload.packageName}")
+                            // Re-triggers replace any finished work left under the same
+                            // unique name (see [trigger]); a live worker for another row
+                            // never reaches this branch because none is `processing`.
+                            Log.i(
+                                TAG,
+                                "Enqueued download worker for ${queuedDownload.packageName}"
+                            )
                             trigger(queuedDownload)
                         }
                 }
@@ -215,6 +251,43 @@ class DownloadHelper @Inject constructor(
                 Log.e(TAG, "Failed to enqueue download worker", exception)
             }
         }.launchIn(AuroraApp.scope)
+    }
+
+    /**
+     * Periodic fallback reconciliation for rows stuck in [DownloadStatus.QUEUED]: a worker
+     * killed by the system (this is common on aggressive OEMs) that never got to report a
+     * result leaves no database change behind, so the observer above never fires again and
+     * the row stays queued forever, blocking every item behind it in the serialized queue.
+     * The sweep marks such rows failed once their download work reached a terminal state
+     * without the row ever leaving QUEUED. Rows whose work is enqueued (waiting for its
+     * constraints, e.g. connectivity) or still running are left untouched.
+     */
+    private fun sweepStalledQueue() {
+        AuroraApp.scope.launch {
+            while (true) {
+                delay(QUEUE_SWEEP_INTERVAL)
+                try {
+                    val downloads = downloadDao.downloads().firstOrNull() ?: continue
+                    downloads.filter { it.status == DownloadStatus.QUEUED }.forEach { download ->
+                        val workInfos = WorkManager.getInstance(context)
+                            .getWorkInfosByTagFlow("$PACKAGE_NAME:${download.packageName}")
+                            .firstOrNull()
+                            .orEmpty()
+                        if (workInfos.isEmpty() || workInfos.any { !it.state.isFinished }) {
+                            return@forEach
+                        }
+                        Log.w(
+                            TAG,
+                            "Marking ${download.packageName} as failed; " +
+                                "its download work finished without reporting"
+                        )
+                        downloadDao.updateStatus(download.packageName, DownloadStatus.FAILED)
+                    }
+                } catch (exception: Exception) {
+                    Log.e(TAG, "Failed to sweep the download queue", exception)
+                }
+            }
+        }
     }
 
     /**
@@ -446,11 +519,15 @@ class DownloadHelper @Inject constructor(
             .setInputData(inputData)
             .build()
 
-        // Ensure all app downloads are unique to preserve individual records
+        // Ensure all app downloads are unique to preserve individual records. REPLACE keeps
+        // the request resumable after a finished run (earlier failed/cancelled work under the
+        // same name) — KEEP would silently drop every re-enqueue instead, leaving a freshly
+        // queued row without a worker forever. A live download is never replaced: trigger is
+        // only called for QUEUED rows while nothing else is processing.
         WorkManager.getInstance(context)
             .enqueueUniqueWork(
                 "$DOWNLOAD_WORKER/${download.packageName}/${download.versionCode}",
-                ExistingWorkPolicy.KEEP,
+                ExistingWorkPolicy.REPLACE,
                 work
             )
     }

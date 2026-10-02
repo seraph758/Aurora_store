@@ -545,13 +545,25 @@ private fun ScreenContentApp(
                     )
                 }
 
-                is AppState.Verifying,
-                is AppState.Installing -> {
+                is AppState.Verifying -> {
                     Actions(
                         primaryActionDisplayName = stringResource(R.string.action_open),
                         secondaryActionDisplayName = stringResource(R.string.action_cancel),
                         isPrimaryActionEnabled = false,
                         isSecondaryActionEnabled = false
+                    )
+                }
+
+                // Cancelling stays available while installing: if the install session was
+                // lost (process killed mid-install) the row would otherwise be stuck on
+                // "Installing" with no way out. [DownloadHelper.cancelDownload] both
+                // abandons staged sessions and marks the row as cancelled.
+                is AppState.Installing -> {
+                    Actions(
+                        primaryActionDisplayName = stringResource(R.string.action_open),
+                        secondaryActionDisplayName = stringResource(R.string.action_cancel),
+                        isPrimaryActionEnabled = false,
+                        onSecondaryAction = onCancelDownload
                     )
                 }
 
