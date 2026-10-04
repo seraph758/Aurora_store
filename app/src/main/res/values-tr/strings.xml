@@ -199,7 +199,7 @@
     <string name="action_installing">Kuruluyor</string>
     <string name="action_installations">Kurulumlar</string>
     <string name="action_install">Kur</string>
-    <string name="action_ignore">Göz ardı et</string>
+    <string name="action_ignore">Yoksay</string>
     <string name="action_granted">İzin verildi</string>
     <string name="action_grant">İzin ver</string>
     <string name="action_get_local_apk">Uygulama paketini kaydet</string>
