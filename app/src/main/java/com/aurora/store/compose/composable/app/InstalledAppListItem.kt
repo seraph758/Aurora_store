@@ -8,6 +8,7 @@ package com.aurora.store.compose.composable.app
 import android.text.format.DateUtils
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -44,7 +45,9 @@ fun InstalledAppListItem(
     sizeBytes: Long = 0L,
     lastUpdateTime: Long = 0L,
     installerLabel: String? = null,
-    onClick: () -> Unit = {}
+    isSelected: Boolean = false,
+    onClick: () -> Unit = {},
+    onCheckedChange: (Boolean) -> Unit = {}
 ) {
     AuroraListItem(
         modifier = modifier,
@@ -65,6 +68,9 @@ fun InstalledAppListItem(
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
+        },
+        trailing = {
+            Checkbox(checked = isSelected, onCheckedChange = onCheckedChange)
         }
     )
 }
