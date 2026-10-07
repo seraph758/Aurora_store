@@ -28,6 +28,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -173,9 +174,13 @@ private fun PageContent(
                     }
 
                     items(items = locales, key = { locale -> locale.hashCode() }) { locale ->
+                        val displayName = remember(locale) { locale.displayName }
+                        val displayLanguage = remember(locale) {
+                            locale.getDisplayLanguage(locale)
+                        }
                         LocaleListItem(
-                            displayName = locale.displayName,
-                            displayLanguage = locale.getDisplayLanguage(locale),
+                            displayName = displayName,
+                            displayLanguage = displayLanguage,
                             isChecked = isLocaleSelected(locale),
                             onClick = { onLocaleSelected(locale) }
                         )
