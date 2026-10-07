@@ -9,6 +9,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.aurora.extensions.TAG
 import com.aurora.store.data.providers.AuthProvider
 import com.aurora.store.data.providers.NativeDeviceInfoProvider
@@ -16,11 +17,16 @@ import com.aurora.store.data.providers.SpoofProvider
 import com.aurora.store.util.PathUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.text.Normalizer
 import java.util.Locale
 import java.util.Properties
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 @HiltViewModel
 class SpoofViewModel @Inject constructor(
@@ -40,6 +46,42 @@ class SpoofViewModel @Inject constructor(
 
     private val _availableLocales = MutableStateFlow(spoofProvider.availableSpoofLocales)
     val availableLocales = _availableLocales.asStateFlow()
+
+    private val searchQuery = MutableStateFlow("")
+
+    /**
+     * Pre-computed, normalized text per locale that is matched against the search query. Covers
+     * the name in the UI language, the native name, region/language names and their codes.
+     */
+    private val localeSearchIndex: Map<Locale, String> by lazy {
+        (_availableLocales.value + defaultLocale).distinct().associateWith { locale ->
+            listOf(
+                locale.displayName,
+                locale.getDisplayName(locale),
+                locale.displayLanguage,
+                locale.displayCountry,
+                locale.toLanguageTag(),
+                locale.language,
+                locale.country
+            ).joinToString(" ").normalizeForSearch()
+        }
+    }
+
+    /** Available locales matching the current search query */
+    val filteredLocales = combine(_availableLocales, searchQuery) { locales, query ->
+        locales.filter { matchesQuery(it, query) }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = _availableLocales.value
+    )
+
+    /** Whether the default locale matches the current search query */
+    val isDefaultLocaleVisible = searchQuery.map { matchesQuery(defaultLocale, it) }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = true
+    )
 
     private val _currentDevice = MutableStateFlow(spoofProvider.deviceProperties)
     val currentDevice = _currentDevice.asStateFlow()
@@ -66,6 +108,32 @@ class SpoofViewModel @Inject constructor(
             spoofProvider.setSpoofLocale(locale)
         }
     }
+
+    fun searchLocales(query: String) {
+        searchQuery.value = query
+    }
+
+    private fun matchesQuery(locale: Locale, query: String): Boolean {
+        val tokens = query.normalizeForSearch().split(' ').filter { it.isNotEmpty() }
+        if (tokens.isEmpty()) return true
+
+        val haystack = localeSearchIndex[locale] ?: return false
+        return tokens.all { haystack.contains(it) }
+    }
+
+    /**
+     * Lowercases, strips diacritics and treats separators (-, _, (, )) as spaces so that
+     * "Türkçe", "turkce", "tr-TR" and "tr TR" all match the same way. Turkish dotless i is
+     * folded explicitly as it has no decomposition.
+     */
+    private fun String.normalizeForSearch(): String = Normalizer
+        .normalize(this, Normalizer.Form.NFD)
+        .replace(Regex("\\p{M}+"), "")
+        .lowercase(Locale.ROOT)
+        .replace('ı', 'i')
+        .replace(Regex("[\\-_()]"), " ")
+        .replace(Regex("\\s+"), " ")
+        .trim()
 
     fun importDeviceSpoof(uri: Uri) {
         try {
